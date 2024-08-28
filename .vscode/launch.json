@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: ConfigSetter",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\ConfigSetter.csproj",
+            "launchConfigurationId": "TargetFramework=;ConfigSetter",
+            "": [
+                "C:\\Users\\user\\source\\repos\\ConfigSetter\\ConfigSetter\\bin\\Debug\\net8.0\\ConfigSetter.dll",
+                "--configuration", ".\\tests\\config.yaml", "--input-settings", ".\\tests\\settings.yaml"
+            ]
+        }
+    ]
+}
