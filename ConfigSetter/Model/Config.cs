@@ -1,4 +1,4 @@
-namespace Energisa.DevOps.ConfigSetter.Model
+namespace ConfigSetter.Model
 {
     public class JsonPatch
     {

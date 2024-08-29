@@ -1,9 +1,9 @@
 using System.CommandLine;
 using System.Text.RegularExpressions;
-using Energisa.DevOps.ConfigSetter.Actions;
-using Energisa.DevOps.ConfigSetter.Binders;
+using ConfigSetter.Actions;
+using ConfigSetter.Binders;
 
-namespace Energisa.DevOps.ConfigSetter.Commands
+namespace ConfigSetter.Commands
 {
 
     public class Root

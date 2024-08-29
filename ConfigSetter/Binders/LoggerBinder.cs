@@ -3,7 +3,7 @@ using System.CommandLine.Binding;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
 
-namespace Energisa.DevOps.ConfigSetter.Binders;
+namespace ConfigSetter.Binders;
 
 public class LoggerBinder : BinderBase<ILogger>
 {

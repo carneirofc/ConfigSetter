@@ -1,11 +1,11 @@
 
 using Microsoft.Extensions.Logging;
-using Energisa.DevOps.ConfigSetter.Model;
+using ConfigSetter.Model;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace Energisa.DevOps.ConfigSetter.Actions
+namespace ConfigSetter.Actions
 {
     public class UpdateConfig
     {

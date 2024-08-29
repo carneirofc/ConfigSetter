@@ -1,5 +1,5 @@
 
-namespace Energisa.DevOps.ConfigSetter.Model;
+namespace ConfigSetter.Model;
 public class UpdateConfigParameters
 {
     public required FileInfo Configuration { get; set; }

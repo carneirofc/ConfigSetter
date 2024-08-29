@@ -1,8 +1,8 @@
 using System.CommandLine;
 using System.CommandLine.Binding;
-using Energisa.DevOps.ConfigSetter.Model;
+using ConfigSetter.Model;
 
-namespace Energisa.DevOps.ConfigSetter.Binders;
+namespace ConfigSetter.Binders;
 
 public class UpdateConfigBinder : BinderBase<UpdateConfigParameters>
 {
