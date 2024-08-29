@@ -1,6 +1,7 @@
 ﻿using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-using Energisa.DevOps.SettingsParser;
+using Energisa.DevOps.ConfigSetter.Commands;
 
-int status = await new Application().Run(args);
+int status = new Root().Invoke(args);
+return status;

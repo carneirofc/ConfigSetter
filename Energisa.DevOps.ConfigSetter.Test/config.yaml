@@ -2,21 +2,21 @@ environments: [ DEV, PROD ]
 settings:
   - name: MEMORY_LIMIT
     type: memory
-    jsonpatch:
+    json_patch:
       - op: replace
         path: "/container/limits/memory"
   - name: CPU_LIMIT
     type: cpu
-    jsonpatch:
+    json_patch:
       - op: replace
         path: "/container/limits/cpu"
   - name: MEMORY_REQUESTS
     type: memory
-    jsonpatch:
+    json_patch:
       - op: replace
         path: "/container/requests/memory"
   - name: CPU_REQUESTS
     type: cpu
-    jsonpatch:
+    json_patch:
       - op: replace
         path: "/container/requests/cpu"

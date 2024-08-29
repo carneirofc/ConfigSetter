@@ -1,19 +1,19 @@
-namespace Energisa.DevOps.SettingsParser.Model
+namespace Energisa.DevOps.ConfigSetter.Model
 {
     public class JsonPatch
     {
-        public string Op { get; set; }
-        public string Path { get; set; }
+        public required string Op { get; set; }
+        public required string Path { get; set; }
     }
-    public class Settings
+    public class Setting
     {
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public List<JsonPatch> JsonPatch { get; set; }
+        public required string Name { get; set; }
+        public required string Type { get; set; }
+        public required List<JsonPatch> JsonPatch { get; set; }
     }
     public class Config
     {
-        public List<string> Environments { get; set; }
-        public Settings Settings { get; set; }
+        public required List<string> Environments { get; set; }
+        public required List<Setting> Settings { get; set; }
     }
 }
