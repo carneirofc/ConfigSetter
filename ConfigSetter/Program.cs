@@ -2,5 +2,5 @@
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-int status = new Root().Invoke(args);
+int status = new RootCommand().Invoke(args);
 return status;

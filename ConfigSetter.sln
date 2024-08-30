@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigSetter", "ConfigSetter\ConfigSetter.csproj", "{7069868E-3EA6-4541-8A64-F2FED1A1DFED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigSetter.Test", "ConfigSetter.Test\ConfigSetter.Test.csproj", "{08E6951A-0C7D-4A19-A165-6D0EEF80BF9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{7069868E-3EA6-4541-8A64-F2FED1A1DFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7069868E-3EA6-4541-8A64-F2FED1A1DFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7069868E-3EA6-4541-8A64-F2FED1A1DFED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08E6951A-0C7D-4A19-A165-6D0EEF80BF9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08E6951A-0C7D-4A19-A165-6D0EEF80BF9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08E6951A-0C7D-4A19-A165-6D0EEF80BF9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08E6951A-0C7D-4A19-A165-6D0EEF80BF9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
