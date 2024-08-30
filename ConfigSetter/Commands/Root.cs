@@ -1,7 +1,7 @@
-using System.CommandLine;
-using System.Text.RegularExpressions;
 using ConfigSetter.Actions;
 using ConfigSetter.Binders;
+using System.CommandLine;
+using System.Text.RegularExpressions;
 
 namespace ConfigSetter.Commands
 {

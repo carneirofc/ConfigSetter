@@ -1,7 +1,7 @@
+using Microsoft.Extensions.Logging;
 using System.CommandLine;
 using System.CommandLine.Binding;
 using System.Text.Json;
-using Microsoft.Extensions.Logging;
 
 namespace ConfigSetter.Binders;
 

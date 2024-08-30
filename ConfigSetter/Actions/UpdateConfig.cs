@@ -1,6 +1,6 @@
 
-using Microsoft.Extensions.Logging;
 using ConfigSetter.Model;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;

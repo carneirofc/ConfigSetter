@@ -1,6 +1,6 @@
+using ConfigSetter.Model;
 using System.CommandLine;
 using System.CommandLine.Binding;
-using ConfigSetter.Model;
 
 namespace ConfigSetter.Binders;
 
