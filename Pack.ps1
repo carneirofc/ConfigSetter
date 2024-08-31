@@ -1,0 +1,1 @@
+dotnet pack --configuration Release --runtime linux-x64 --output ./nupkgs

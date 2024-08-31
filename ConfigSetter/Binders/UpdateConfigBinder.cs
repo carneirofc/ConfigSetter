@@ -6,21 +6,21 @@ namespace ConfigSetter.Binders;
 
 public class UpdateConfigBinder : BinderBase<UpdateConfigParameters>
 {
-    private readonly Option<FileInfo> _configurationOption;
-    private readonly Option<FileInfo> _inputSettingsOption;
-
-    public UpdateConfigBinder(Option<FileInfo> configurationOption, Option<FileInfo> inputSettingsOption) : base()
-    {
-        _configurationOption = configurationOption;
-        _inputSettingsOption = inputSettingsOption;
-    }
+    public required Option<FileInfo> ConfigurationOption { get; set; }
+    public required Option<FileInfo> InputSettingsOption { get; set; }
+    public required Option<string> Prefix { get; set; }
+    public required Option<string> OutputFormatOption { get; set; }
+    public required Option<FileInfo> OutputFileOption { get; set; }
 
     protected override UpdateConfigParameters GetBoundValue(BindingContext bindingContext)
     {
         return new UpdateConfigParameters()
         {
-            Configuration = bindingContext.ParseResult.CommandResult.GetValueForOption(_configurationOption) ?? throw new ArgumentException("Configuration file is required"),
-            InputSettings = bindingContext.ParseResult.CommandResult.GetValueForOption(_inputSettingsOption) ?? throw new ArgumentException("Input settings file is required")
+            Configuration = bindingContext.ParseResult.CommandResult.GetValueForOption(ConfigurationOption) ?? throw new ArgumentException("Configuration file is required"),
+            InputSettings = bindingContext.ParseResult.CommandResult.GetValueForOption(InputSettingsOption) ?? throw new ArgumentException("Input settings file is required"),
+            Prefix = bindingContext.ParseResult.CommandResult.GetValueForOption(Prefix) ?? throw new ArgumentException("Prefix is required"),
+            OutputFormat = bindingContext.ParseResult.CommandResult.GetValueForOption(OutputFormatOption) ?? "yaml",
+            OutputFile = bindingContext.ParseResult.CommandResult.GetValueForOption(OutputFileOption) ?? null
         };
     }
 }

@@ -1,6 +1,7 @@
 using ConfigSetter.Actions;
 using ConfigSetter.Binders;
 using System.CommandLine;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 
 namespace ConfigSetter.Commands;
@@ -11,13 +12,26 @@ public class RootCommand
     public int Invoke(string[] args)
     {
 
-        var verboseOption = new Option<bool>(
+        var loggingVerboseOption = new Option<bool>(
             aliases: ["--verbose", "-v"],
             description: "Show verbose output",
             getDefaultValue: () => false
         )
         { IsRequired = false, Arity = ArgumentArity.Zero };
 
+        var loggingSilentOption = new Option<bool>(
+            aliases: ["--silent", "-s"],
+            description: "Show no output",
+            getDefaultValue: () => false
+        )
+        { IsRequired = false, Arity = ArgumentArity.Zero };
+
+        var loggingToStdErrOptions = new Option<bool>(
+            aliases: ["--log-to-stderr"],
+            description: "Log to stderr",
+            getDefaultValue: () => false
+        )
+        { IsRequired = false, Arity = ArgumentArity.Zero };
         var loggingFormatOption = new Option<string>(
             aliases: ["--logging-format", "-f"],
             description: "The logging format to use",
@@ -25,7 +39,6 @@ public class RootCommand
         )
         { IsRequired = false, Arity = ArgumentArity.ExactlyOne, };
         loggingFormatOption.FromAmong("text", "json");
-
         var configurationOption = new Option<FileInfo>(
             aliases: ["--configuration", "-c"],
             description: "The configuration file to parse",
@@ -80,18 +93,55 @@ public class RootCommand
         )
         { AllowMultipleArgumentsPerToken = false, IsRequired = true, Arity = ArgumentArity.ExactlyOne };
 
+        var outputFormatOption = new Option<string>(
+            aliases: ["--output-format"],
+            description: "The output format to use",
+            getDefaultValue: () => "json"
+        )
+        { IsRequired = false, Arity = ArgumentArity.ExactlyOne };
+        outputFormatOption.FromAmong("json", "yaml");
+        var outputFileOption = new Option<FileInfo>(
+            aliases: ["--output-file", "-o"],
+            description: "The output file to write the settings to",
+            parseArgument: (argResult) =>
+            {
+                var value = argResult.Tokens.Single().Value;
+                var finfo = new FileInfo(value);
+                if (finfo.Exists)
+                {
+                    throw new ArgumentException($"File {value} already exists");
+                }
+                return finfo;
+            }
+        )
+        { AllowMultipleArgumentsPerToken = false, IsRequired = false, Arity = ArgumentArity.ExactlyOne };
+
         var rootCommand = new System.CommandLine.RootCommand(description: "A simple tool to parse settings files");
-        rootCommand.AddOption(verboseOption);
+        rootCommand.AddOption(loggingVerboseOption);
+        rootCommand.AddOption(loggingFormatOption);
+        rootCommand.AddOption(loggingToStdErrOptions);
+        rootCommand.AddOption(loggingSilentOption);
+
         rootCommand.AddOption(configurationOption);
         rootCommand.AddOption(inputSettingsOption);
-        rootCommand.AddOption(loggingFormatOption);
+        rootCommand.AddOption(prefixOption);
+
+        rootCommand.AddOption(outputFormatOption);
+        rootCommand.AddOption(outputFileOption);
         rootCommand.SetHandler((logger, parameters) =>
         {
             return new UpdateConfigAction(logger).Execute(parameters);
 
         },
-            new LoggerBinder(verboseOption, loggingFormatOption, "Root"),
-            new UpdateConfigBinder(configurationOption, inputSettingsOption)
+            new LoggerBinder() { Name = "Root", VerboseOptions = loggingVerboseOption, SilentOption = loggingSilentOption, ToStdErrOption = loggingToStdErrOptions },
+            new UpdateConfigBinder()
+            {
+                Prefix = prefixOption,
+                ConfigurationOption = configurationOption,
+                InputSettingsOption = inputSettingsOption,
+                OutputFormatOption = outputFormatOption,
+                OutputFileOption = outputFileOption
+            }
         );
 
         return rootCommand.Invoke(args);

@@ -1,53 +1,36 @@
 using ConfigSetter.Actions;
+using ConfigSetter.Logging;
 using ConfigSetter.Model;
 using Microsoft.Extensions.Logging;
+using System.CommandLine.IO;
+using System.CommandLine.Rendering;
+
+
 namespace ConfigSetter.Test.Actions;
-
-public class TempFile : IDisposable
-{
-    private bool disposedValue;
-
-    public FileInfo FileInfo { get; }
-    public TempFile(string path)
-    {
-        FileInfo = new FileInfo(path);
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (!disposedValue)
-        {
-            if (disposing)
-            {
-                if (FileInfo.Exists)
-                {
-                    FileInfo.Delete();
-                }
-            }
-            disposedValue = true;
-        }
-    }
-
-    ~TempFile()
-    {
-        Dispose(disposing: false);
-    }
-
-    public void Dispose()
-    {
-        Dispose(disposing: true);
-        GC.SuppressFinalize(this);
-    }
-}
 
 public class UpdateConfigActionTest
 {
     private readonly ILogger _logger;
     public UpdateConfigActionTest()
     {
-        _logger = LoggerFactory.Create(builder => builder.AddConsole()).CreateLogger<UpdateConfigAction>();
+        var loggerFactory = new LoggerFactory().AddSimpleConsole(LogLevel.Debug, LogLevel.Warning);
+        _logger = loggerFactory.CreateLogger<UpdateConfigAction>();
     }
 
+    [Fact]
+    async public Task TestUpdateConfig()
+    {
+
+        var action = new UpdateConfigAction(_logger);
+        var result = await action.Execute(new UpdateConfigParameters
+        {
+            Configuration = new FileInfo("Resources/config.yaml"),
+            InputSettings = new FileInfo("Resources/settings.yaml"),
+            Prefix = "DEV"
+        });
+
+        _logger.LogInformation("Result: {0}", result);
+    }
 
     [Fact]
     public void TestExceptionIfNotExists()
