@@ -1,5 +1,7 @@
 # CLI tool to generate formatted yaml files from a given configuration file
 
+[![.NET](https://github.com/carneirofc/ConfigSetter/actions/workflows/dotnet.yml/badge.svg)](https://github.com/carneirofc/ConfigSetter/actions/workflows/dotnet.yml)
+
 This is a DevOps tool that generates formatted yaml or json files from a given configuration file.
 This tools is useful then you need to expose the the user a config file and need to transform that normal config file into another format or perform some operations on it.
 
