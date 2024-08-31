@@ -1,24 +1,23 @@
 setup:
   json_patch:
-    - { "op": "add", "path": "/container", "value": {} }
-    - { "op": "add", "path": "/container/resources", "value": {} }
-    - { "op": "add", "path": "/container/resources/requests", "value": {} }
-    - { "op": "add", "path": "/container/resources/limits", "value": {} }
+    - { "op": "add", "path": "/resources", "value": {} }
+    - { "op": "add", "path": "/resources/requests", "value": {} }
+    - { "op": "add", "path": "/resources/limits", "value": {} }
 
 settings:
   - name: MEMORY_LIMIT
     type: memory
     json_patch:
-      - { "op": "add", "path": "/container/resources/limits/memory" }
+      - { "op": "add", "path": "/resources/limits/memory" }
   - name: CPU_LIMIT
     type: cpu
     json_patch:
-      - { "op": "add", "path": "/container/resources/limits/cpu" }
+      - { "op": "add", "path": "/resources/limits/cpu" }
   - name: MEMORY_REQUESTS
     type: memory
     json_patch:
-      - { "op": "add", "path": "/container/resources/requests/memory" }
+      - { "op": "add", "path": "/resources/requests/memory" }
   - name: CPU_REQUESTS
     type: cpu
     json_patch:
-      - { "op": "add", "path": "/container/resources/requests/cpu" }
+      - { "op": "add", "path": "/resources/requests/cpu" }

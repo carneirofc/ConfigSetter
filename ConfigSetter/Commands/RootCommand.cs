@@ -39,6 +39,7 @@ public class RootCommand
         )
         { IsRequired = false, Arity = ArgumentArity.ExactlyOne, };
         loggingFormatOption.FromAmong("text", "json");
+
         var configurationOption = new Option<FileInfo>(
             aliases: ["--configuration", "-c"],
             description: "The configuration file to parse",
@@ -102,17 +103,7 @@ public class RootCommand
         outputFormatOption.FromAmong("json", "yaml");
         var outputFileOption = new Option<FileInfo>(
             aliases: ["--output-file", "-o"],
-            description: "The output file to write the settings to",
-            parseArgument: (argResult) =>
-            {
-                var value = argResult.Tokens.Single().Value;
-                var finfo = new FileInfo(value);
-                if (finfo.Exists)
-                {
-                    throw new ArgumentException($"File {value} already exists");
-                }
-                return finfo;
-            }
+            description: "The output file to write the settings to"
         )
         { AllowMultipleArgumentsPerToken = false, IsRequired = false, Arity = ArgumentArity.ExactlyOne };
 
@@ -133,7 +124,13 @@ public class RootCommand
             return new UpdateConfigAction(logger).Execute(parameters);
 
         },
-            new LoggerBinder() { Name = "Root", VerboseOptions = loggingVerboseOption, SilentOption = loggingSilentOption, ToStdErrOption = loggingToStdErrOptions },
+            new LoggerBinder()
+            {
+                Name = "Root",
+                VerboseOptions = loggingVerboseOption,
+                SilentOption = loggingSilentOption,
+                ToStdErrOption = loggingToStdErrOptions
+            },
             new UpdateConfigBinder()
             {
                 Prefix = prefixOption,

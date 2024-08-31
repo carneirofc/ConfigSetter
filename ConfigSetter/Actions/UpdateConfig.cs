@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Dynamic;
+using System.Text;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -20,9 +21,11 @@ public class UpdateConfigAction
 
     public Task<int> Execute(UpdateConfigParameters parameters)
     {
-        _logger.LogInformation("Updating configuration file {0} with input settings file {1}", parameters.Configuration.FullName, parameters.InputSettings.FullName);
+        _logger.LogInformation("Configuration file {0}", parameters.Configuration.FullName);
+        _logger.LogInformation("Input settings file {1}", parameters.InputSettings.FullName);
+
         var config = LoadYamlConfig<Config>(parameters.Configuration);
-        _logger.LogInformation("Loaded configuration file {0}", JsonConvert.SerializeObject(config));
+        _logger.LogDebug("Loaded configuration file\n{0}", JsonConvert.SerializeObject(config));
         if (config == null)
         {
             _logger.LogError("Configuration file is empty");
@@ -30,7 +33,7 @@ public class UpdateConfigAction
         }
 
         var settings = LoadYamlConfig<object>(parameters.InputSettings);
-        _logger.LogInformation("Loaded settings file {0} type {1}", JsonConvert.SerializeObject(settings as object), settings?.GetType());
+        _logger.LogDebug("Loaded settings file\n{0}", JsonConvert.SerializeObject(settings));
 
 
         if (settings == null)
@@ -63,10 +66,9 @@ public class UpdateConfigAction
             setupPatch.Operations.Add(new Operation() { op = patch.Op.ToLower(), path = patch.Path, value = patch.Value });
         }
         setupPatch.ApplyTo(newDocument);
-        _logger.LogDebug("New document after setup: {0}", JsonConvert.SerializeObject(newDocument));
+        _logger.LogDebug("New document after setup:\n{0}", JsonConvert.SerializeObject(newDocument));
 
 
-        // var patchDoc = new JsonPatchDocument();
         foreach (var kvp in variables)
         {
             _logger.LogDebug("Key: {0}, Value: {1}", kvp.Key, kvp.Value);
@@ -94,24 +96,47 @@ public class UpdateConfigAction
             }
         }
 
-        var serializer = new SerializerBuilder()
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithQuotingNecessaryStrings()
-            .Build();
-
-        _logger.LogInformation("New document: {0}", JsonConvert.SerializeObject(newDocument));
-        _logger.LogInformation("New document as YAML: {0}", serializer.Serialize(newDocument));
+        var serialized = Serialize(parameters.OutputFormat, newDocument);
+        if (string.IsNullOrEmpty(serialized))
+        {
+            _logger.LogError("Failed to serialize document");
+            return Task.FromResult(1);
+        }
 
         if (parameters.OutputFile != null)
         {
-            File.WriteAllText(parameters.OutputFile.FullName, serializer.Serialize(newDocument));
+            if (parameters.OutputFile.Exists)
+            {
+                _logger.LogWarning("Output file {0} already exists, overwriting", parameters.OutputFile.FullName);
+                parameters.OutputFile.Delete();
+            }
+            File.WriteAllText(parameters.OutputFile.FullName, serialized, Encoding.Default);
+            _logger.LogDebug("Wrote new document to {0} using encoding {1}", parameters.OutputFile.FullName, Encoding.Default.EncodingName);
         }
         else
         {
-            Console.WriteLine(serializer.Serialize(newDocument));
+            Console.WriteLine(serialized);
         }
 
         return Task.FromResult(0);
+    }
+
+    private string Serialize(string format, object obj)
+    {
+        if (format == "json")
+        {
+            return JsonConvert.SerializeObject(obj, Formatting.Indented);
+        }
+        if (format == "yaml")
+        {
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .WithQuotingNecessaryStrings()
+                .Build();
+            return serializer.Serialize(obj);
+        }
+        _logger.LogError("Unsupported format \"{0}\"", format);
+        return string.Empty;
     }
 
     private T? LoadYamlConfig<T>(FileInfo configuration)
