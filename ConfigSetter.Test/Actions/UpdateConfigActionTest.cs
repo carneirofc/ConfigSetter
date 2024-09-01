@@ -2,8 +2,6 @@ using ConfigSetter.Actions;
 using ConfigSetter.Logging;
 using ConfigSetter.Model;
 using Microsoft.Extensions.Logging;
-using System.CommandLine.IO;
-using System.CommandLine.Rendering;
 
 
 namespace ConfigSetter.Test.Actions;
@@ -22,14 +20,23 @@ public class UpdateConfigActionTest
     {
 
         var action = new UpdateConfigAction(_logger);
+        var tmpDir = Path.GetTempPath();
+        var output = new TempFile(Path.Combine(tmpDir, "output.yaml"));
         var result = await action.Execute(new UpdateConfigParameters
         {
             Configuration = new FileInfo("Resources/config.yaml"),
             InputSettings = new FileInfo("Resources/settings.yaml"),
+            OutputFile = output.FileInfo,
             Prefix = "DEV"
         });
 
-        _logger.LogInformation("Result: {0}", result);
+        var outputContent = File.ReadAllText(output.FileInfo.FullName);
+        Assert.Equal(0, result);
+        Assert.Contains(@"resources:
+  requests: {}
+  limits:
+    cpu: 15m
+    memory: 128", outputContent);
     }
 
     [Fact]
