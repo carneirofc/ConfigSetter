@@ -2,9 +2,6 @@ using ConfigSetter.Logging;
 using Microsoft.Extensions.Logging;
 using System.CommandLine;
 using System.CommandLine.Binding;
-using System.CommandLine.IO;
-using System.CommandLine.Rendering;
-using System.Text.Json;
 namespace ConfigSetter.Binders;
 
 public class LoggerBinder : BinderBase<ILogger>

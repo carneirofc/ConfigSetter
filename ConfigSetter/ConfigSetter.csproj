@@ -46,7 +46,6 @@
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.8" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-    <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="YamlDotNet" Version="16.0.0" />
   </ItemGroup>
 
