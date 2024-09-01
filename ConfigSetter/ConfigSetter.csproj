@@ -1,16 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <DebugType>embedded</DebugType>
     <ImplicitUsings>enable</ImplicitUsings>
-    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <Nullable>enable</Nullable>
     <OutputType>Exe</OutputType>
     <PackAsTool>true</PackAsTool>
-    <!-- <PublishSingleFile>true</PublishSingleFile> -->
+    <PackageDescription>Command line tool to read input from a yaml/json file and outputs the values to a configurable output format, allowing for a controller manner to expose a config file to the end user</PackageDescription>
+    <PackageId>ConfigSetter</PackageId>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RollForward>LatestMajor</RollForward>
     <TargetFramework>net8.0</TargetFramework>
-    <RuntimeIdentifiers>win-x64;linux-x64;osx-x64</RuntimeIdentifiers>
+    <ToolCommandName>config-setter</ToolCommandName>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>ConfigSetter</Title>
+    <RepositoryUrl>https://github.com/carneirofc/ConfigSetter</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>devops;cli;config;parse</PackageTags>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>embedded</DebugType>
+    <WarningLevel>7</WarningLevel>
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>embedded</DebugType>
+    <WarningLevel>7</WarningLevel>
+    <NoWarn>1701;1702</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="8.0.8" />
